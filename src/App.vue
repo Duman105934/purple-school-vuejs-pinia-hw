@@ -1,10 +1,10 @@
-<script setup>
-const now = new Date();
-</script>
+<script setup >
+import Button from "./Components/Button.vue";
+</script >
 
-<template>
-  <div>{{ now }}</div>
-</template>
+<template >
+  <Button >Начать игру</Button >
+</template >
 
-<style scoped>
-</style>
+<style scoped >
+</style >

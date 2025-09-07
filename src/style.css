@@ -1,6 +1,36 @@
 :root {
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	--color-text-primary: #000000;
+	--color-text-primary-hover: #222222;
+	--color-text-button: #FFFFFF;
+
+	--color-bg: #F0F4F8;
+	--color-bg-hover: #006FCB;
+	--color-bg-card: #FFFFFF;
+
+	--color-icon-green: #09BB00;
+	--color-icon-red: #D00303;
+	--color-button: #008BFE;
+
+	--color-border-card: #CCE8FF;
+
+	--font: "Roboto", sans-serif;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: var(--font), sans-serif;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	color: var(--color-text-card);
+	background-color: var(--color-bg);
+
+	display: grid;
+	place-items: center;
+	height: 100vh;
 }
