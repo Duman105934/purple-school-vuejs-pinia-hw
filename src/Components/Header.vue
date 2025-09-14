@@ -1,6 +1,6 @@
 <script setup >
 
-import HeartIcon from '../icons/HeartIcon.vue';
+import Score from './Score.vue';
 
 const {gameScore} = defineProps({
   gameScore: Number
@@ -16,10 +16,7 @@ const {gameScore} = defineProps({
 
     <!--Количество очков и иконка-->
     <div class="header__right" >
-      <div class="header__right-score" >
-        {{ gameScore }}
-      </div >
-      <HeartIcon />
+      <Score :game-score="gameScore"/>
     </div >
   </div >
 </template >
@@ -55,13 +52,5 @@ const {gameScore} = defineProps({
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
 }
 
-.header__right-score {
-  margin-right: 10px;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 24px; /* 150% */
-  color: var(--color-button);
-}
 
 </style >

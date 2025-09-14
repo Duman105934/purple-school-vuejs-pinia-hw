@@ -35,9 +35,7 @@ function checkingUserAnswer(userAnswer) {
     data.isAnswerCorrect = true;
   } else if (userAnswer !== data.correctAnswer) {
     data.isAnswerCorrect = false;
-  } else (
-      data.isAnswerCorrect = null
-  );
+  }
   data.cardState = 'completed';
 }
 
@@ -86,10 +84,10 @@ function checkingUserAnswer(userAnswer) {
 }
 
 .main {
-  min-height: calc(var(--max-height) - var(--header-height));
+  max-height: calc(var(--max-height) - var(--header-height));
   padding: 49px 66px;
-  justify-content: center;
-  align-content: center;
+  justify-content: start;
+  align-content: flex-start;
 }
 
 .center {
