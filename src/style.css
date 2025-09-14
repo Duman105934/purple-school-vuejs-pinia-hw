@@ -14,6 +14,15 @@
 	--color-border-card: #CCE8FF;
 
 	--font: "Roboto", sans-serif;
+	--max-width: 1440px;
+	--min-width: 1006px;
+	--max-height: 1440px;
+
+	--header-height: 121px;
+
+	--card-width: 250px;
+	--card-height: 376px;
+	--gap: 60px;
 }
 
 * {
@@ -27,10 +36,6 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 
-	color: var(--color-text-card);
 	background-color: var(--color-bg);
-
-	display: grid;
-	place-items: center;
-	height: 100vh;
+	margin: 0;
 }
