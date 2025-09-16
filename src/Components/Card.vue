@@ -9,13 +9,12 @@ const cardFlipText = 'ПЕРЕВЕНУТЬ';
 const cardCompletedText = 'ЗАВЕРШЕНО';
 
 const props = defineProps({
-  gameScore: Number,
-  cardNumber: String,
-  englishText: String,
-  translatedText: String,
+  word: String,
+  translation: String,
+  status: String, // "success" | "pending" | "fail"
+  state: String, // "closed" | "opened"
   correctAnswer: String,
-  isAnswerCorrect: Boolean,
-  cardState: String, // "flip" | "revealed" | "completed"
+  cardNumber: String,
 });
 
 const emit = defineEmits(['userSelectAnswer']);
@@ -35,14 +34,14 @@ function userSelectedAnswer(userAnswer) {
 
     <!--Текст карточки-->
     <div class="card" >
-      <div v-if="props.cardState === 'flip'" class="card__text" >{{ props.englishText }}</div >
-      <div v-else class="card__text" >{{ props.translatedText }}</div >
+      <div v-if="props.state === 'closed' && props.status === 'pending'" class="card__text" >{{ props.word }}</div >
+      <div v-else class="card__text" >{{ props.translation }}</div >
     </div >
 
     <!--Результат игры после ответа пользователя-->
     <div class="substrate__top-icons" >
-      <div v-if="props.isAnswerCorrect === null" ></div >
-      <div v-else-if="props.isAnswerCorrect" class="substrate__top-icons top-icon__success" >
+      <div v-if="props.status === 'pending'" ></div >
+      <div v-else-if="props.status ==='success'" class="substrate__top-icons top-icon__success" >
         <SuccessIcon :icon-size="iconSizeL" />
       </div >
       <div v-else class="substrate__top-icons top-icon__fail" >
@@ -52,8 +51,8 @@ function userSelectedAnswer(userAnswer) {
 
     <!--Выбор ответа пользователя и состояние карты-->
     <div class="substrate__bottom" >
-      <div v-if="props.cardState==='flip'" class=" substrate__bottom-text" >{{ cardFlipText }}</div >
-      <div v-else-if="props.cardState==='revealed'" class="substrate__bottom-icons" >
+      <div v-if="props.state === 'closed' && props.status === 'pending'" class=" substrate__bottom-text" >{{ cardFlipText }}</div >
+      <div v-else-if="props.state === 'opened' && props.status === 'pending'" class="substrate__bottom-icons" >
         <SuccessIcon :icon-size="iconSizeS" @click="userSelectedAnswer('success')" />
         <FailIcon :icon-size="iconSizeS" @click="userSelectedAnswer('fail')" />
       </div >

@@ -3,40 +3,40 @@
 import Button from './Components/Button.vue';
 import Header from './Components/Header.vue';
 import Card from './Components/Card.vue';
-import { reactive } from 'vue';
+import { ref } from 'vue';
 
-const gameState = reactive(true);
-const gameBtnText = !gameState ? 'Начать игру' : 'Начать заново';
+const gameState = ref(true);
+const gameBtnText = !gameState.value ? 'Начать игру' : 'Начать заново';
 
-const data = reactive({
-  gameScore: 100,
-  cardNumber: '02',
-  englishText: 'black cat',
-  translatedText: 'черный кот',
+const gameScore = ref(50)
+const data = ref({
+  word: 'black cat',
+  translation: 'черный кот',
+  status: 'pending', // "success" | "pending" | "fail"
+  state: 'closed', // "closed" | "opened"
   correctAnswer: 'success',
-  isAnswerCorrect: null,
-  cardState: 'flip', // "flip" | "revealed" | "completed"
+  cardNumber: '02',
 });
 
 function onEnter() {
-  if (data.cardState === 'flip') {
-    data.cardState = 'revealed';
+  if (data.value.state === 'closed') {
+    data.value.state = 'opened';
   }
 }
 
 function onLeave() {
-  if (data.cardState !== 'completed') {
-    data.cardState = 'flip';
+  if (data.value.state === 'opened') {
+    data.value.state = 'closed';
   }
 }
 
 function checkingUserAnswer(userAnswer) {
-  if (userAnswer === data.correctAnswer) {
-    data.isAnswerCorrect = true;
-  } else if (userAnswer !== data.correctAnswer) {
-    data.isAnswerCorrect = false;
+  if (userAnswer === data.value.correctAnswer) {
+    data.value.status = 'success';
+  } else if (userAnswer !== data.value.correctAnswer) {
+    data.value.status = 'fail';
   }
-  data.cardState = 'completed';
+  data.value.state = 'closed';
 }
 
 </script >
@@ -46,7 +46,7 @@ function checkingUserAnswer(userAnswer) {
   <div class="layout" >
     <!--Заголовок игры-->
     <div class="header" >
-      <Header :game-score="data.gameScore" />
+      <Header :game-score="gameScore" />
     </div >
 
     <!--Основной блок игры-->
