@@ -8,35 +8,128 @@ import { ref } from 'vue';
 const gameState = ref(true);
 const gameBtnText = !gameState.value ? 'Начать игру' : 'Начать заново';
 
-const gameScore = ref(50)
-const data = ref({
-  word: 'black cat',
-  translation: 'черный кот',
-  status: 'pending', // "success" | "pending" | "fail"
-  state: 'closed', // "closed" | "opened"
-  correctAnswer: 'success',
-  cardNumber: '02',
-});
+const gameScore = ref(100);
 
-function onEnter() {
-  if (data.value.state === 'closed') {
-    data.value.state = 'opened';
+const data = ref(
+    [
+      {
+        word: 'black cat',
+        translation: 'черный кот',
+        status: 'pending',
+        state: 'closed',
+        correctAnswer: 'success',
+        cardNumber: '01'
+      },
+      {
+        word: 'white dog',
+        translation: 'белая собака',
+        status: 'pending',
+        state: 'closed',
+        correctAnswer: 'fail',
+        cardNumber: '02'
+      },
+      {
+        word: 'green apple',
+        translation: 'зелёное яблоко',
+        status: 'pending',
+        state: 'closed',
+        correctAnswer: 'success',
+        cardNumber: '03'
+      },
+      {
+        word: 'red car',
+        translation: 'красная машина',
+        status: 'pending',
+        state: 'closed',
+        correctAnswer: 'fail',
+        cardNumber: '04'
+      },
+      {
+        word: 'blue sky',
+        translation: 'голубое небо',
+        status: 'pending',
+        state: 'closed',
+        correctAnswer: 'success',
+        cardNumber: '05'
+      },
+      {
+        word: 'yellow sun',
+        translation: 'жёлтое солнце',
+        status: 'pending',
+        state: 'closed',
+        correctAnswer: 'fail',
+        cardNumber: '06'
+      },
+      {
+        word: 'brown bear',
+        translation: 'бурый медведь',
+        status: 'pending',
+        state: 'closed',
+        correctAnswer: 'success',
+        cardNumber: '07'
+      },
+      {
+        word: 'orange juice',
+        translation: 'апельсиновый сок',
+        status: 'pending',
+        state: 'closed',
+        correctAnswer: 'fail',
+        cardNumber: '08'
+      },
+      {
+        word: 'pink flower',
+        translation: 'розовый цветок',
+        status: 'pending',
+        state: 'closed',
+        correctAnswer: 'success',
+        cardNumber: '09'
+      },
+      {
+        word: 'gray mouse',
+        translation: 'серая мышь',
+        status: 'pending',
+        state: 'closed',
+        correctAnswer: 'fail',
+        cardNumber: '10'
+      },
+      {
+        word: 'long road',
+        translation: 'длинная дорога',
+        status: 'pending',
+        state: 'closed',
+        correctAnswer: 'success',
+        cardNumber: '11'
+      },
+      {
+        word: 'big house',
+        translation: 'большой дом',
+        status: 'pending',
+        state: 'closed',
+        correctAnswer: 'fail',
+        cardNumber: '12'
+      },
+    ]
+);
+
+function onEnter(item) {
+  if (item.state === 'closed') {
+    item.state = 'opened';
   }
 }
 
-function onLeave() {
-  if (data.value.state === 'opened') {
-    data.value.state = 'closed';
+function onLeave(item) {
+  if (item.state === 'opened') {
+    item.state = 'closed';
   }
 }
 
-function checkingUserAnswer(userAnswer) {
-  if (userAnswer === data.value.correctAnswer) {
-    data.value.status = 'success';
-  } else if (userAnswer !== data.value.correctAnswer) {
-    data.value.status = 'fail';
+function checkingUserAnswer(item, userAnswer) {
+  if (userAnswer === item.correctAnswer) {
+    item.status = 'success';
+  } else if (userAnswer !== item.correctAnswer) {
+    item.status = 'fail';
   }
-  data.value.state = 'closed';
+  item.state = 'closed';
 }
 
 </script >
@@ -56,10 +149,11 @@ function checkingUserAnswer(userAnswer) {
       </div >
       <div v-else class="cards" >
         <Card
-            v-bind="data"
-            @user-select-answer="checkingUserAnswer"
-            @mouseenter="onEnter"
-            @mouseleave="onLeave"
+            v-for="item in data" :key="item.cardNumber"
+            v-bind="item"
+            @user-select-answer="checkingUserAnswer(item, $event)"
+            @mouseenter="onEnter(item)"
+            @mouseleave="onLeave(item)"
         />
       </div >
     </div >
