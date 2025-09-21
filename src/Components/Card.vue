@@ -1,4 +1,4 @@
-<script setup >
+<script setup>
 
 import SuccessIcon from '../icons/SuccessIcon.vue';
 import FailIcon from '../icons/FailIcon.vue';
