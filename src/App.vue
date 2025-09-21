@@ -1,115 +1,31 @@
-<script setup >
-
+<script setup>
 import Button from './Components/Button.vue';
 import Header from './Components/Header.vue';
 import Card from './Components/Card.vue';
 import { ref } from 'vue';
 
-const gameState = ref(true);
-const gameBtnText = !gameState.value ? 'Начать игру' : 'Начать заново';
-
+const gameState = ref(false);
 const gameScore = ref(100);
+const data = ref([]);
 
-const data = ref(
-    [
-      {
-        word: 'black cat',
-        translation: 'черный кот',
-        status: 'pending',
-        state: 'closed',
-        correctAnswer: 'success',
-        cardNumber: '01'
-      },
-      {
-        word: 'white dog',
-        translation: 'белая собака',
-        status: 'pending',
-        state: 'closed',
-        correctAnswer: 'fail',
-        cardNumber: '02'
-      },
-      {
-        word: 'green apple',
-        translation: 'зелёное яблоко',
-        status: 'pending',
-        state: 'closed',
-        correctAnswer: 'success',
-        cardNumber: '03'
-      },
-      {
-        word: 'red car',
-        translation: 'красная машина',
-        status: 'pending',
-        state: 'closed',
-        correctAnswer: 'fail',
-        cardNumber: '04'
-      },
-      {
-        word: 'blue sky',
-        translation: 'голубое небо',
-        status: 'pending',
-        state: 'closed',
-        correctAnswer: 'success',
-        cardNumber: '05'
-      },
-      {
-        word: 'yellow sun',
-        translation: 'жёлтое солнце',
-        status: 'pending',
-        state: 'closed',
-        correctAnswer: 'fail',
-        cardNumber: '06'
-      },
-      {
-        word: 'brown bear',
-        translation: 'бурый медведь',
-        status: 'pending',
-        state: 'closed',
-        correctAnswer: 'success',
-        cardNumber: '07'
-      },
-      {
-        word: 'orange juice',
-        translation: 'апельсиновый сок',
-        status: 'pending',
-        state: 'closed',
-        correctAnswer: 'fail',
-        cardNumber: '08'
-      },
-      {
-        word: 'pink flower',
-        translation: 'розовый цветок',
-        status: 'pending',
-        state: 'closed',
-        correctAnswer: 'success',
-        cardNumber: '09'
-      },
-      {
-        word: 'gray mouse',
-        translation: 'серая мышь',
-        status: 'pending',
-        state: 'closed',
-        correctAnswer: 'fail',
-        cardNumber: '10'
-      },
-      {
-        word: 'long road',
-        translation: 'длинная дорога',
-        status: 'pending',
-        state: 'closed',
-        correctAnswer: 'success',
-        cardNumber: '11'
-      },
-      {
-        word: 'big house',
-        translation: 'большой дом',
-        status: 'pending',
-        state: 'closed',
-        correctAnswer: 'fail',
-        cardNumber: '12'
-      },
-    ]
-);
+async function getData() {
+  const res = await fetch('http://localhost:8080/api/random-words');
+  const json = await res.json();
+
+  if (!res) {
+    data.value = null;
+    return [];
+  }
+
+  data.value = json.map((item, index) => ({
+    word: item.word,
+    translation: item.translation,
+    status: 'pending',
+    state: 'closed',
+    correctAnswer: Math.random() > 0.5 ? 'success' : 'fail',
+    cardNumber: String(index + 1)
+  }));
+}
 
 function onEnter(item) {
   if (item.state === 'closed') {
@@ -135,7 +51,6 @@ function checkingUserAnswer(item, userAnswer) {
 </script >
 
 <template >
-
   <div class="layout" >
     <!--Заголовок игры-->
     <div class="header" >
@@ -145,7 +60,7 @@ function checkingUserAnswer(item, userAnswer) {
     <!--Основной блок игры-->
     <div class="main" >
       <div v-if="!gameState" class="center" >
-        <Button >{{ gameBtnText }}</Button >
+        <Button @click="gameState = true, getData()">{{ 'Начать игру' }}</Button >
       </div >
       <div v-else class="cards" >
         <Card
@@ -160,7 +75,7 @@ function checkingUserAnswer(item, userAnswer) {
 
     <!--Кнопка запуска/перезапуска игры-->
     <div v-if="gameState" class="footer" >
-      <Button >{{ gameBtnText }}</Button >
+      <Button @click="gameState = false">{{ 'Начать заново' }}</Button >
     </div >
   </div >
 
