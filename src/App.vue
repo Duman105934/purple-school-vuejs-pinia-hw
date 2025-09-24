@@ -2,11 +2,13 @@
 import Button from './Components/Button.vue';
 import Header from './Components/Header.vue';
 import Card from './Components/Card.vue';
-import { ref } from 'vue';
+import { provide, ref } from 'vue';
 
 const gameState = ref(false);
-const gameScore = ref(100);
+let gameScore = ref(0);
 const data = ref([]);
+
+provide('gameScore', gameScore);
 
 async function getData() {
   const res = await fetch('http://localhost:8080/api/random-words');
@@ -42,8 +44,10 @@ function onLeave(item) {
 function checkingUserAnswer(item, userAnswer) {
   if (userAnswer === item.correctAnswer) {
     item.status = 'success';
+    gameScore.value = gameScore.value + 10;
   } else if (userAnswer !== item.correctAnswer) {
     item.status = 'fail';
+    gameScore.value = gameScore.value - 4;
   }
   item.state = 'closed';
 }
@@ -54,13 +58,13 @@ function checkingUserAnswer(item, userAnswer) {
   <div class="layout" >
     <!--Заголовок игры-->
     <div class="header" >
-      <Header :game-score="gameScore" />
+      <Header />
     </div >
 
     <!--Основной блок игры-->
     <div class="main" >
       <div v-if="!gameState" class="center" >
-        <Button @click="gameState = true, getData()">{{ 'Начать игру' }}</Button >
+        <Button @click="gameState = true; getData(); gameScore = 100">{{ 'Начать игру' }}</Button >
       </div >
       <div v-else class="cards" >
         <Card
@@ -75,7 +79,7 @@ function checkingUserAnswer(item, userAnswer) {
 
     <!--Кнопка запуска/перезапуска игры-->
     <div v-if="gameState" class="footer" >
-      <Button @click="gameState = false">{{ 'Начать заново' }}</Button >
+      <Button @click="getData(); gameScore = 100">{{ 'Начать заново' }}</Button >
     </div >
   </div >
 
