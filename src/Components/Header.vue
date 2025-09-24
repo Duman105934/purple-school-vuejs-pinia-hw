@@ -1,22 +1,14 @@
 <script setup >
-
 import Score from './Score.vue';
-
-const {gameScore} = defineProps({
-  gameScore: Number
-});
-
 </script >
 
 <template >
-
   <div class="header" >
     <!--Наименование игры-->
     <div class="header__left" >ЗАПОМНИ СЛОВО</div >
-
     <!--Количество очков и иконка-->
     <div class="header__right" >
-      <Score :game-score="gameScore"/>
+      <Score />
     </div >
   </div >
 </template >
